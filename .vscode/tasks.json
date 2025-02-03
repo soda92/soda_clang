@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "cpc",
+            "type": "shell",
+            "command": "python cpc.py",
+            "problemMatcher": []
+        }
+    ]
+}
