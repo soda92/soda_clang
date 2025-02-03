@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "soda_clang",
+            "name": "clang",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/soda_clang/main.py",
@@ -22,10 +22,10 @@
             "preLaunchTask": "cpc"
         },
         {
-            "name": "soda_clang",
+            "name": "clang++",
             "type": "debugpy",
             "request": "launch",
-            "program": "soda-clang++",
+            "program": "${workspaceFolder}/soda_clang/main_cxx.py",
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",

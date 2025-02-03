@@ -76,7 +76,7 @@ def main(cxx=False):
             for i in cxx_includes:
                 cmdline.append(f"-I{str_path(gcc_path.joinpath(i))}")
         cmdline.append("-Wno-ignored-attributes")
-        print(" ".join(cmdline))
+        # print(" ".join(cmdline))
         subprocess.run(cmdline, check=True)
 
     libs = "-lmingw32 -lmoldname -lmingwex -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32 -lgcc".split()
@@ -121,8 +121,8 @@ def main(cxx=False):
             "-lmingw32 -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc -lmoldname -lmingwex -lmsvcrt".split()
         )
 
-    print(" ".join(link_cmd))
-    Path("cmd").write_text(" ".join(link_cmd), encoding="utf8")
+    # print(" ".join(link_cmd))
+    # Path("cmd").write_text(" ".join(link_cmd), encoding="utf8")
     subprocess.run(link_cmd, check=True)
 
 
