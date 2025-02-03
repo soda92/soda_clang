@@ -2,20 +2,28 @@ import argparse
 from pathlib import Path
 import functools
 import subprocess
+import os
+
+
+def which(name):
+    path = os.environ["PATH"]
+    for p in path.split(";"):
+        exe = Path(p).joinpath(name)
+        if exe.exists():
+            return exe
 
 
 @functools.cache
 def get_gcc_path():
-    out = subprocess.getoutput("gcc -v")
-    path = out.split("\n")[1].split("=")
-    return Path(path).resolve().parent
+    out = which("gcc.exe")
+    return out.resolve().parent.parent
 
 
 def str_path(p: Path):
     return str(p).replace("\\", "/")
 
 
-def main():
+def main(cxx=False):
     parser = argparse.ArgumentParser()
     parser.add_argument("sources", type=str, nargs="*", default=[], help="sources")
     parser.add_argument(
@@ -43,6 +51,8 @@ def main():
     gcc_path: Path = get_gcc_path()
 
     cmdline = ["clang", "-c"]
+    if cxx:
+        cmdline = ["clang++", "-c"]
     targets = []
     for source in sources:
         cmdline.append(source)
@@ -59,6 +69,7 @@ def main():
         subprocess.run(cmdline, check=True)
 
     libs = "-lmingw32 -lmoldname -lmingwex -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32 -lgcc".split()
+    libs.extend(args.link)
     link_cmd = [
         str_path(gcc_path.joinpath("bin/ld.exe")),
         "-m",
@@ -88,7 +99,10 @@ def main():
 
     link_cmd.extend(libs)
 
-    print(link_cmd)
+    link_cmd.append("-o")
+    link_cmd.append(args.output)
+
+    print(" ".join(link_cmd))
     subprocess.run(link_cmd, check=True)
 
 
