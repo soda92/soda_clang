@@ -13,8 +13,8 @@ dev = ["build", "twine"]
 Repository = "https://github.com/soda92/soda_clang"
 
 [project.scripts]
-soda_clang = "soda_clang.main:main"
-"soda_clang++" = "soda_clang.main:main_cxx"
+soda-clang = "soda_clang.main:main"
+"soda-clang++" = "soda_clang.main:main_cxx"
 
 [build-system]
 requires = ["hatchling"]

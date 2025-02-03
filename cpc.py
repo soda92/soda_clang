@@ -13,3 +13,4 @@ elif d.is_file():
 
 d.mkdir(exist_ok=True)
 shutil.copy("2.c", d)
+shutil.copy("3.cc", d)

@@ -20,6 +20,23 @@
                 "2.exe"
             ],
             "preLaunchTask": "cpc"
+        },
+        {
+            "name": "soda_clang",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "soda-clang++",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "cwd": "${workspaceFolder}/tmp",
+            "args": [
+                "3.cc",
+                "-o",
+                "3.exe"
+            ],
+            "preLaunchTask": "cpc"
         }
     ]
 }

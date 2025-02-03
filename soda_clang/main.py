@@ -63,7 +63,18 @@ def main(cxx=False):
         for i in args.include:
             includes.append("-I" + i)
         cmdline.extend(includes)
-        cmdline.append(f"-I{str_path(gcc_path.joinpath('x86_64-w64-mingw32/include'))}")
+        if not cxx:
+            c_includes = ["x86_64-w64-mingw32/include"]
+            for i in c_includes:
+                cmdline.append(f"-I{str_path(gcc_path.joinpath(i))}")
+        else:
+            cxx_includes = [
+                "include/c++/13.2.0/x86_64-w64-mingw32",
+                "include/c++/13.2.0",
+                "x86_64-w64-mingw32/include",
+            ]
+            for i in cxx_includes:
+                cmdline.append(f"-I{str_path(gcc_path.joinpath(i))}")
         cmdline.append("-Wno-ignored-attributes")
         print(" ".join(cmdline))
         subprocess.run(cmdline, check=True)
@@ -81,6 +92,8 @@ def main(cxx=False):
         "lib/gcc/x86_64-w64-mingw32/13.2.0/",
     ]
     search_paths.extend(args.library)
+    if cxx:
+        search_paths.append("lib")
 
     for i in search_paths:
         link_cmd.append(f"-L{str_path(gcc_path.joinpath(i))}")
@@ -98,12 +111,23 @@ def main(cxx=False):
         link_cmd.append(t)
 
     link_cmd.extend(libs)
+    if cxx:
+        link_cmd.append("-lstdc++")
 
     link_cmd.append("-o")
     link_cmd.append(args.output)
+    if cxx:
+        link_cmd.extend(
+            "-lmingw32 -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc -lmoldname -lmingwex -lmsvcrt".split()
+        )
 
     print(" ".join(link_cmd))
+    Path("cmd").write_text(" ".join(link_cmd), encoding="utf8")
     subprocess.run(link_cmd, check=True)
+
+
+def main_cxx():
+    main(cxx=True)
 
 
 if __name__ == "__main__":
